@@ -1,4 +1,5 @@
 /*SHARP GP2Y0A21YK0F IR sensor with Arduino and SharpIR library example code. More info: https://www.makerguides.com */
+/*https://www.makerguides.com/sharp-gp2y0a21yk0f-ir-distance-sensor-arduino-tutorial/*/
 // Include the library:
 #include <SharpIR.h>
 // Define model and input pin:
@@ -14,6 +15,10 @@ int distance_cm;
 */
 // Create a new instance of the SharpIR class:
 SharpIR mySensor = SharpIR(IRPin, model);
+SharpIR mySensor2 = SharpIR(IRPin, model);
+SharpIR mySensor3 = SharpIR(IRPin, model);
+//3 sensors in total
+
 void setup() {
   // Begin serial communication at a baudrate of 9600:
   Serial.begin(9600);
