@@ -1,3 +1,5 @@
+/*https://rees52.com/learn/2792-rotate-stepper-motor-with-uln2003-motor-driver-rotary-encoder-module-kt614*/
+
 #include "Stepper.h"
 
 #define STEPS  32   // Number of steps for one revolution of Internal shaft
