@@ -1,5 +1,5 @@
 /* Example sketch to control a 28BYJ-48 stepper motor with ULN2003 driver board and Arduino UNO. More info: https://www.makerguides.com */
-/*https://www.makerguides.com/28byj-48-stepper-motor-arduino-tutorial/*/
+//https://www.makerguides.com/28byj-48-stepper-motor-arduino-tutorial/ 
 // Include the Arduino Stepper.h library:
 #include <Stepper.h>
 // Define number of steps per rotation:
@@ -10,22 +10,48 @@ const int stepsPerRevolution = 2048;
 // Pin 10 to IN3 on the ULN2003 driver
 // Pin 11 to IN4 on the ULN2003 driver
 // Create stepper object called 'myStepper', note the pin order:
-Stepper myStepper = Stepper(stepsPerRevolution, 8, 10, 9, 11);
+Stepper myStepper = Stepper(stepsPerRevolution, 8, 10, 9, 11); //right motor
+Stepper yourStepper = Stepper(stepsPerRevolution, 2, 4, 3, 5); //left motor
 void setup() {
   // Set the speed to 5 rpm:
-  myStepper.setSpeed(5);
+  myStepper.setSpeed(15);
+  yourStepper.setSpeed(15);
   
   // Begin Serial communication at a baud rate of 9600:
   Serial.begin(9600);
 }
 void loop() {
   // Step one revolution in one direction:
-  Serial.println("clockwise");
-  myStepper.step(stepsPerRevolution);
-  delay(500);
+  //Serial.println("clockwise");
+  //yourStepper.step(stepsPerRevolution);
+  //delay(500);
   
   // Step one revolution in the other direction:
-  Serial.println("counterclockwise");
+  /*Serial.println("counterclockwise");
   myStepper.step(-stepsPerRevolution);
-  delay(500);
+  delay(500);*/
+
+ while (1) {
+ right_turn();
+ 
+ delay(500);
+
+ left_turn();
+
+ }
+}
+
+void right_turn() {
+  for (int s = 0; s <= 2048; s++) {
+  myStepper.step(-1);
+  yourStepper.step(-1);
+  }
+  
+}
+void left_turn() {
+  for (int s = 0; s <= 2048; s++) {
+  myStepper.step(1);
+  yourStepper.step(1);
+  }
+  
 }
