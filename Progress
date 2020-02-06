@@ -1,0 +1,93 @@
+/* Example sketch to control a 28BYJ-48 stepper motor with ULN2003 driver board and Arduino UNO. More info: https://www.makerguides.com */
+//https://www.makerguides.com/28byj-48-stepper-motor-arduino-tutorial/ 
+// Include the Arduino Stepper.h library:
+#include <Stepper.h>
+#include <SharpIR.h>
+// Define number of steps per rotation:
+#define IRPin A0
+#define IRPin1 A1
+#define IRPin2 A2
+#define model 1080
+
+const int stepsPerRevolution = 2048;
+int distance_front, distance_left, distance_right;
+// Wiring:
+// Pin 8 to IN1 on the ULN2003 driver
+// Pin 9 to IN2 on the ULN2003 driver
+// Pin 10 to IN3 on the ULN2003 driver
+// Pin 11 to IN4 on the ULN2003 driver
+// Create stepper object called 'myStepper', note the pin order:
+Stepper myStepper = Stepper(stepsPerRevolution, 8, 10, 9, 11); //right motor
+Stepper yourStepper = Stepper(stepsPerRevolution, 2, 4, 3, 5); //left motor
+SharpIR mySensor = SharpIR(IRPin, model);
+SharpIR mySensor2 = SharpIR(IRPin1, model);
+SharpIR mySensor3 = SharpIR(IRPin2, model);
+
+void setup() {
+  // Set the speed to 5 rpm:
+  myStepper.setSpeed(15);
+  yourStepper.setSpeed(15);
+  
+  // Begin Serial communication at a baud rate of 9600:
+  Serial.begin(9600);
+}
+void loop() {
+  distance_front = mySensor.distance(); //front
+  distance_left = mySensor2.distance(); //left
+  distance_right = mySensor3.distance(); //right
+  
+  if ((distance_front <= 10)) {
+    myStepper.step(0);
+    yourStepper.step(0);
+
+    switch(distance_left || distance_right) {
+      case (distance_left <= 10) && (distance_right <= 10):
+        right_turn();
+        delay(10);
+        break;
+      case (distance_left <= 10):
+        right_turn();
+        delay(5);
+        break;
+       case (distance_right <= 10):
+        left_turn();
+        delay(5);
+        break;
+    }
+  }
+  
+       
+    
+  }
+  // Print the measured distance to the serial monitor:
+  /*Serial.print("Mean distance: ");
+  Serial.print(distance_cm);
+  Serial.println(" cm");
+  
+
+ while (1) {
+ right_turn();
+ 
+ delay(500);
+
+ left_turn();
+*/
+ 
+
+ }
+}
+
+void right_turn() {
+  for (int s = 0; s <= 2048; s++) {
+  myStepper.step(-1);
+  yourStepper.step(-1);
+  }
+  
+}
+void left_turn() {
+  for (int s = 0; s <= 2048; s++) {
+  myStepper.step(1);
+  yourStepper.step(1);
+  }
+  
+}
